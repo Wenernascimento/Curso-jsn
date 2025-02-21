@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Variação de Preços</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: hsl(0, 85%, 3%);
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #de4a4a;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #34495e;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #resultado {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .result-title {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .analise-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .variacao {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .variacao.subiu {
+            color: #27ae60;
+        }
+
+        .variacao.desceu {
+            color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Análise de Variação de Preços</h1>
+        
+        <div class="input-group">
+            <label for="preco-antigo">Preço Antigo (R$):</label>
+            <input type="number" step="0.01" id="preco-antigo" placeholder="Ex: 125,00">
+        </div>
+
+        <div class="input-group">
+            <label for="preco-novo">Preço Novo (R$):</label>
+            <input type="number" step="0.01" id="preco-novo" placeholder="Ex: 132,00">
+        </div>
+
+        <button onclick="calcularVariacao()">Calcular Variação</button>
+
+        <div id="resultado">
+            <h2 class="result-title">Preço Mudou</h2>
+            <div class="analise-section">
+                <h3>Analisando os valores informados</h3>
+                <p id="valores"></p>
+                <p id="situacao"></p>
+                <p id="diferenca"></p>
+                <p id="percentual"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calcularVariacao() {
+            // Obter valores dos inputs
+            const precoAntigo = parseFloat(document.getElementById('preco-antigo').value.replace(',', '.'));
+            const precoNovo = parseFloat(document.getElementById('preco-novo').value.replace(',', '.'));
+
+            // Validar entradas
+            if (isNaN(precoAntigo) || isNaN(precoNovo)) {
+                alert('Por favor, insira valores numéricos válidos!');
+                return;
+            }
+
+            if (precoAntigo <= 0) {
+                alert('O preço antigo deve ser maior que zero!');
+                return;
+            }
+
+            // Calcular diferença e percentual
+            const diferenca = precoNovo - precoAntigo;
+            const percentual = (Math.abs(diferenca) / precoAntigo) * 100;
+
+            // Formatador de moeda
+            const formatter = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+
+            // Atualizar interface
+            document.getElementById('resultado').style.display = 'block';
+            document.getElementById('valores').innerHTML = 
+                `O produto custava <strong>${formatter.format(precoAntigo)}</strong> e agora custa <strong>${formatter.format(precoNovo)}</strong>.`;
+
+            const situacao = document.getElementById('situacao');
+            const diferencaElement = document.getElementById('diferenca');
+            const percentualElement = document.getElementById('percentual');
+
+            if (diferenca > 0) {
+                situacao.innerHTML = 'Hoje o produto está <span class="variacao subiu">mais caro</span>.';
+                diferencaElement.innerHTML = `O preço subiu <span class="variacao subiu">${formatter.format(diferenca)}</span> em relação ao preço anterior.`;
+                percentualElement.innerHTML = `Uma variação de <span class="variacao subiu">${percentual.toFixed(2).replace('.', ',')}%</span> pra cima.`;
+            } else if (diferenca < 0) {
+                situacao.innerHTML = 'Hoje o produto está <span class="variacao desceu">mais barato</span>.';
+                diferencaElement.innerHTML = `O preço caiu <span class="variacao desceu">${formatter.format(Math.abs(diferenca))}</span> em relação ao preço anterior.`;
+                percentualElement.innerHTML = `Uma variação de <span class="variacao desceu">${percentual.toFixed(2).replace('.', ',')}%</span> pra baixo.`;
+            } else {
+                situacao.innerHTML = 'Não houve alteração no preço do produto.';
+                diferencaElement.innerHTML = '';
+                percentualElement.innerHTML = '';
+            }
+        }
+    </script>
+</body>
+</html>

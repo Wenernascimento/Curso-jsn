@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contagem Inteligente</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            
+        }
+
+        body {
+            background-color: #3f7fde;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            
+        }
+
+
+        .container {
+            background-color: #bf0c0c;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px #f1eaeae6;
+            max-width: 500px; /* Reduzido para 500px */
+            width: 100%;
+        }
+
+        h1 {
+            color: hsl(210, 25%, 92%);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: hsl(210, 12%, 97%);
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+            margin-bottom: 1.5rem;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #contagem-output {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); /* Diminuído para 50px */
+            gap: 8px; /* Reduzido para um espaço menor */
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .numero {
+            padding: 8px; /* Menor padding */
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            background-color: #e74c3c;
+            color: white;
+            animation: appear 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .numero.par {
+            background-color: #27ae60;
+        }
+
+        .numero .seta {
+            margin-left: 5px;
+            font-size: 1.2rem;
+        }
+
+        @keyframes appear {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            #contagem-output {
+                grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); /* Ajustado para telas menores */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contagem Inteligente</h1>
+        
+        <div class="input-group">
+            <label for="inicio">Valor Inicial:</label>
+            <input type="number" id="inicio" value="90">
+        </div>
+
+        <div class="input-group">
+            <label for="fim">Valor Final:</label>
+            <input type="number" id="fim" value="5">
+        </div>
+
+        <button onclick="iniciarContagem()">Iniciar Contagem</button>
+
+        <div id="contagem-output"></div>
+    </div>
+
+    <script>
+        function iniciarContagem() {
+            const inicio = parseInt(document.getElementById('inicio').value);
+            const fim = parseInt(document.getElementById('fim').value);
+            const output = document.getElementById('contagem-output');
+            output.innerHTML = '';
+
+            // Validação dos valores
+            if (isNaN(inicio) || isNaN(fim)) {
+                alert('Por favor, insira valores numéricos válidos!');
+                return;
+            }
+
+            if (inicio === fim) {
+                alert('Os valores inicial e final não podem ser iguais!');
+                return;
+            }
+
+            const incremento = inicio > fim ? -1 : 1;
+            const tempoIntervalo = 50; // ms entre cada número
+
+            let current = inicio;
+            const interval = setInterval(() => {
+                const numeroDiv = document.createElement('div');
+                numeroDiv.className = `numero ${current % 2 === 0 ? 'par' : ''}`;
+                numeroDiv.textContent = current;
+
+                // Adicionando a seta ao lado do número
+                const seta = document.createElement('span');
+                seta.className = 'seta';
+                seta.textContent = '👉🏾';
+                numeroDiv.appendChild(seta);
+
+                output.appendChild(numeroDiv);
+
+                // Rolagem automática para o último elemento
+                output.scrollTop = output.scrollHeight;
+
+                if (current === fim) clearInterval(interval);
+                current += incremento;
+            }, tempoIntervalo);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boletim Escolar</title>
+    <style>
+        /* Reset básico e fonte padrão */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to bottom, rgb(52, 66, 226), #FEB47B);
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: hsl(70, 88%, 53%);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .boletim-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .boletim-container h2 {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+        }
+
+        table th, table td {
+            padding: 0.8rem;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        table td {
+            background-color: #f9f9f9;
+        }
+
+        mark {
+            background-color: #ffeb3b;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .result {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .result p {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Estilos para o botão */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Estilos responsivos */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .boletim-container {
+                padding: 1rem;
+                width: 95%;
+            }
+
+            table th, table td {
+                padding: 0.5rem;
+            }
+
+            button {
+                font-size: 1.2rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Boletim Escolar</h1>
+    <div class="boletim-container">
+        <h2>Resultado do Aluno</h2>
+        <button onclick="calcularBoletim()">Calcular Boletim</button>
+
+        <div id="resultado" class="result">
+            <p>O resultado será exibido aqui...</p>
+        </div>
+
+        <table id="tabela-notas" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Disciplina</th>
+                    <th>Nota 1</th>
+                    <th>Nota 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Matemática</td>
+                    <td id="nota-mat1"></td>
+                    <td id="nota-mat2"></td>
+                </tr>
+                <tr>
+                    <td>Português</td>
+                    <td id="nota-por1"></td>
+                    <td id="nota-por2"></td>
+                </tr>
+                <tr>
+                    <td>Ciências</td>
+                    <td id="nota-cie1"></td>
+                    <td id="nota-cie2"></td>
+                </tr>
+                <!-- Adicionar mais disciplinas se necessário -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function calcularBoletim() {
+            let nome = prompt('Digite o nome do aluno:');
+            let mat1 = Number(prompt('Qual foi a primeira nota de Matemática?'));
+            let mat2 = Number(prompt('Qual foi a segunda nota de Matemática?'));
+
+            let por1 = Number(prompt('Qual foi a primeira nota de Português?'));
+            let por2 = Number(prompt('Qual foi a segunda nota de Português?'));
+
+            let cie1 = Number(prompt('Qual foi a primeira nota de Ciências?'));
+            let cie2 = Number(prompt('Qual foi a segunda nota de Ciências?'));
+
+            // Verificar se as notas são válidas
+            if (isNaN(mat1) || isNaN(mat2) || isNaN(por1) || isNaN(por2) || isNaN(cie1) || isNaN(cie2)) {
+                alert('Por favor, insira notas válidas!');
+                return;
+            }
+
+            // Calcular as médias
+            let mediaMat = (mat1 + mat2) / 2;
+            let mediaPor = (por1 + por2) / 2;
+            let mediaCie = (cie1 + cie2) / 2;
+            let mediaFinal = (mediaMat + mediaPor + mediaCie) / 3;
+
+            // Determinar a situação (Aprovado ou Reprovado)
+            let situacao = mediaFinal >= 6 ? "Aprovado" : "Reprovado";
+
+            // Exibir o resultado
+            document.getElementById('resultado').innerHTML = `
+                <p>Calculando o boletim de <mark>${nome}</mark></p>
+                <p>Média final: <mark>${mediaFinal.toFixed(2)}</mark></p>
+                <p>Situação: <mark>${situacao}</mark></p>
+            `;
+
+            // Exibir tabela com as notas
+            document.getElementById('tabela-notas').style.display = 'table';
+
+            // Atribuir as notas na tabela
+            document.getElementById('nota-mat1').textContent = mat1;
+            document.getElementById('nota-mat2').textContent = mat2;
+
+            document.getElementById('nota-por1').textContent = por1;
+            document.getElementById('nota-por2').textContent = por2;
+
+            document.getElementById('nota-cie1').textContent = cie1;
+            document.getElementById('nota-cie2').textContent = cie2;
+        }
+    </script>
+</body>
+</html>

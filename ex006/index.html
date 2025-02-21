@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Soma</title>
+<style>
+    body {
+        background: greenyellow;
+    }
+     button{
+        background-color: blueviolet;
+     }    
+    
+</style>
+
+
+</head>
+<body>
+
+    <h2>Calculadora de Soma</h2>
+
+    <button onclick="iniciarSoma()">Iniciar a soma</button>
+
+    <script>
+        function iniciarSoma() {
+            // Pede ao usuário para digitar os números através do prompt
+            let numero1 = parseFloat(prompt("Digite o primeiro número:"));
+            let numero2 = parseFloat(prompt("Digite o segundo número:"));
+
+            // Verifica se os valores inseridos são números válidos
+            if (isNaN(numero1) || isNaN(numero2)) {
+                alert("Por favor, digite dois números válidos.");
+            } else {
+                // Calcula a soma
+                let soma = numero1 + numero2;
+
+                // Exibe o resultado em um alerta
+                alert("A soma é: " + soma);
+            }
+        }
+    </script>
+
+</body>
+</html>

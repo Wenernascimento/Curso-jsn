@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercícios JavaScript</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --light: #ecf0f1;
+            --success: #27ae60;
+            --danger: #e74c3c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        .exercicios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .exercicio {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .exercicio:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .resultado {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: var(--light);
+        }
+
+        #contagem-list {
+            list-style: none;
+            columns: 2;
+        }
+
+        @media (max-width: 768px) {
+            .exercicios-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Exercícios JavaScript</h1>
+        
+        <div class="exercicios-grid">
+            <!-- Exercício 1 -->
+            <div class="exercicio">
+                <h2>1️⃣ Exibir Mensagem no Console</h2>
+                <p>Clique no botão para exibir uma mensagem no console:</p>
+                <button onclick="exibirConsole()">Exibir Mensagem</button>
+            </div>
+
+            <!-- Exercício 2 -->
+            <div class="exercicio">
+                <h2>2️⃣ Soma de Dois Números</h2>
+                <div class="input-group">
+                    <input type="number" id="num1" placeholder="Digite o primeiro número">
+                </div>
+                <div class="input-group">
+                    <input type="number" id="num2" placeholder="Digite o segundo número">
+                </div>
+                <button onclick="calcularSoma()">Calcular Soma</button>
+                <div class="resultado" id="soma-result"></div>
+            </div>
+
+            <!-- Exercício 3 -->
+            <div class="exercicio">
+                <h2>3️⃣ Par ou Ímpar</h2>
+                <div class="input-group">
+                    <input type="number" id="numero-par" placeholder="Digite um número" oninput="verificarPar()">
+                </div>
+                <div class="resultado" id="par-result"></div>
+            </div>
+
+            <!-- Exercício 4 -->
+            <div class="exercicio">
+                <h2>4️⃣ Contagem 1 a 10</h2>
+                <button onclick="iniciarContagem()">Iniciar Contagem</button>
+                <div class="resultado">
+                    <ul id="contagem-list"></ul>
+                </div>
+            </div>
+
+            <!-- Exercício 5 -->
+            <div class="exercicio">
+                <h2>5️⃣ Calcular Quadrado</h2>
+                <div class="input-group">
+                    <input type="number" id="numero-quadrado" placeholder="Digite um número">
+                </div>
+                <button onclick="calcularQuadrado()">Calcular</button>
+                <div class="resultado" id="quadrado-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Exercício 1
+        function exibirConsole() {
+            console.log("✅ Mensagem exibida no console com sucesso!");
+            alert("Mensagem exibida no console! (Verifique o console do navegador)");
+        }
+
+        // Exercício 2
+        function calcularSoma() {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            
+            if (isNaN(num1) || isNaN(num2)) {
+                alert("Por favor, digite números válidos!");
+                return;
+            }
+            
+            const resultado = num1 + num2;
+            document.getElementById('soma-result').innerHTML = 
+                `Resultado: ${num1} + ${num2} = <strong>${resultado}</strong>`;
+        }
+
+        // Exercício 3
+        function verificarPar() {
+            const numero = parseInt(document.getElementById('numero-par').value);
+            const resultado = document.getElementById('par-result');
+            
+            if (isNaN(numero)) {
+                resultado.innerHTML = "";
+                return;
+            }
+            
+            resultado.innerHTML = numero % 2 === 0 ? 
+                `<span style="color: var(--success)">${numero} é PAR</span>` : 
+                `<span style="color: var(--danger)">${numero} é ÍMPAR</span>`;
+        }
+
+        // Exercício 4
+        function iniciarContagem() {
+            const lista = document.getElementById('contagem-list');
+            lista.innerHTML = "";
+            
+            for (let i = 1; i <= 10; i++) {
+                const item = document.createElement('li');
+                item.textContent = `Número ${i}`;
+                lista.appendChild(item);
+            }
+        }
+
+        // Exercício 5
+        function calcularQuadrado() {
+            const numero = parseFloat(document.getElementById('numero-quadrado').value);
+            
+            if (isNaN(numero)) {
+                alert("Digite um número válido!");
+                return;
+            }
+            
+            const quadrado = numero ** 2;
+            document.getElementById('quadrado-result').innerHTML = 
+                `O quadrado de ${numero} é <strong>${quadrado}</strong>`;
+        }
+    </script>
+</body>
+</html>

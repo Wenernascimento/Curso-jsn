@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Preços</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: hsl(244, 39%, 49%);
+        }
+        h1 {
+            color: hsl(0, 29%, 97%);
+            text-align: center;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #output {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 4px;
+             background-color: #ccc;
+             color: blueviolet;
+            }
+        .message {
+            margin: 10px 0;
+            
+        }
+    </style>
+</head>
+<body>
+    <h1>Análise de Variação de Preços</h1>
+    <button onclick="analyzePrices()">Analisar Preços</button>
+    <div id="output"></div>
+
+    <script>
+        function analyzePrices() {
+            // Solicitar valores ao usuário
+            const oldPrice = parseFloat(prompt('Digite o preço anterior:').replace(',', '.'));
+            const newPrice = parseFloat(prompt('Digite o preço atual:').replace(',', '.'));
+
+            // Validar entradas
+            if (isNaN(oldPrice) || isNaN(newPrice)) {
+                alert('Valores inválidos! Por favor, digite números válidos.');
+                return;
+            }
+
+            // Calcular diferença e percentual
+            const difference = newPrice - oldPrice;
+            const percentage = oldPrice !== 0 
+                ? ((Math.abs(difference) / oldPrice) * 100)
+                : 0;
+
+            // Formatador de moeda brasileira
+            const formatter = new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+
+            // Construir mensagem
+            let outputHTML = `
+                <h2>Preço mudou</h2>
+                <h3>Analisando os valores informados</h3>
+                <div class="message">O produto custava ${formatter.format(oldPrice)} e agora custa ${formatter.format(newPrice)}.</div>
+            `;
+
+            if (difference > 0) {
+                outputHTML += `
+                    <div class="message">Hoje o produto está mais caro.</div>
+                    <div class="message">O preço subiu ${formatter.format(difference)} em relação ao preço anterior.</div>
+                    <div class="message">Uma variação de ${percentage.toFixed(2).replace('.', ',')}% pra cima.</div>
+                `;
+            } else if (difference < 0) {
+                outputHTML += `
+                    <div class="message">Hoje o produto está mais barato.</div>
+                    <div class="message">O preço caiu ${formatter.format(Math.abs(difference))} em relação ao preço anterior.</div>
+                    <div class="message">Uma variação de ${percentage.toFixed(2).replace('.', ',')}% pra baixo.</div>
+                `;
+            } else {
+                outputHTML += `<div class="message">Não houve alteração no preço do produto.</div>`;
+            }
+
+            // Exibir resultado
+            document.getElementById('output').innerHTML = outputHTML;
+        }
+    </script>
+</body>
+</html>
